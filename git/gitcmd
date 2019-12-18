@@ -1,0 +1,67 @@
+git config --local user.name Sarah-Wang
+git config --local user.email yyzxml@outlook.com
+git clone git@github.com:Sarah-Wang/xx.git
+
+git log --pretty=oneline
+git reflog
+
+
+#----branch options------------------------
+#list local branchs, HEAD ref to the branch with * ------
+git branch
+
+#create new branch--------
+git branch newbranch
+
+#switch to a new branch---------
+git checkout newbranch
+
+#create a new branch and switch to it ---------------
+git checkout -b newbranch
+
+#suppose that the following actions are at newbranch
+git add newfile
+git commit -m "somemsg"
+
+#switch to master branch and merge the commit on newbranch----
+git checkout master
+#by default, merge with fast-forward mode-----
+git merge newbranch
+#merge with --no-ff, not using fast-forward mode------
+git merge --no-ff -m "merge b2 with no-ff" b2
+
+#delete newbranch----------
+git branch -d newbranch
+
+#query git log graphically----
+git log --graph --pretty=oneline --abbrev-commit
+
+#stash your work states if you want to checkout to another branch without committing,
+#for example-----------------
+sarah@Ubuntu1404:~/mygit/gittest$ git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+	gitcmd
+	Please, commit your changes or stash them before you can switch branches.
+	Aborting
+----------------------------
+git checkout working
+git stash
+git checkout bugfix
+#here, you may switch to another branch and do something
+git checkout working
+git stash list
+git pop
+
+#track a remote branch : git checkout -b localbranchname remoterepname/remotebranchname---
+#or git checkout --track remoterepname/remotebranchname---
+git checkout -b feature origin/feature
+git checkout --track orgin/feature
+
+#delete a remote branch: git push remoterepname :remotebranchname------------
+#or git push origin --delete remotebranchname----
+git push origin :feature
+
+##track a remote branch, create link between local and remote branch, then pull the repository/branch----
+git checkout -b feature origin/feature
+git branch --set-upstream-to=origin/feature feature
+git pull
