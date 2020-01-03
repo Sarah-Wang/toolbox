@@ -21,7 +21,7 @@ int check_path(char *filename)
 	}
 
 	len = ptr - filename;
-	if (len >= sizeof(path) ) {
+	if (len >= sizeof(path)) {
 		printf("ERROR: filename is too long( >= %d )!\n",
 				(int)sizeof(path));
 		return -3;
