@@ -50,6 +50,7 @@ void str_to_mac(const char *buffer)
 		sprintf(tmpx, "0x%s", tmps);
 		/* printf("tmpx: %s\n", tmpx); */
 		tmp[m] = strtol(tmpx, NULL, 16);
+		/* tmp[m] = atoi(tmpx); */
 		printf("tmp[m]=%02x\n", (unsigned int)tmp[m]);
 		while (tmps = strtok(NULL, fs)) {
 			/* printf("tmps: %s\n", tmps); */
