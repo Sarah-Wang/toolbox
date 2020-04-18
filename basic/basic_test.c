@@ -46,7 +46,7 @@ void ptr_test(void)
 	printf("value: %s\n", value);
 }
 
-void main(void)
+int main(void)
 {
 	array_size_test();
 
@@ -55,4 +55,6 @@ void main(void)
 	sizeof_const_string_test();
 
 	ptr_test();
+
+	return 0;
 }
