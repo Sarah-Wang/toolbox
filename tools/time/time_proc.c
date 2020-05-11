@@ -8,6 +8,9 @@
 /* for usleep() */
 #include <unistd.h>
 
+/* for uint64_t */
+#include <stdint.h>
+
 int get_time_cost_timeval(struct timeval *result,
 		struct timeval *old, struct timeval *new)
 {
@@ -125,6 +128,56 @@ void get_time_string_us(void)
 			date_time, ts.tv_usec);
 }
 
+static inline uint64_t get_time_us(void)
+{
+	struct timespec tv;
+
+	clock_gettime(CLOCK_MONOTONIC, &tv);
+
+	return (uint64_t)tv.tv_sec * 1000000 + tv.tv_nsec / 1000;
+}
+
+void test_get_time_us(void)
+{
+	printf("now time us: %llu\n", (unsigned long long int)get_time_us);
+}
+
+static int is_within_object_time(char *obj_time)
+{
+	time_t nsecs = 0;
+	struct tm *ptm = NULL;
+	int current_min = 0;
+	int start_min = 0;
+	int end_min = 0;
+	int start_hour = 0;
+	int end_hour = 0;
+	int ret = 0;
+
+	time(&nsecs);
+	ptm = localtime(&nsecs);
+	current_min = ptm->tm_hour * 60 + ptm->tm_min;
+	ret = sscanf(obj_time, "%d:%d-%d:%d",
+			&start_hour, &start_min,
+			&end_hour, &end_min);
+	if (ret != 4)
+		return 0;
+	start_min = start_hour * 60 + start_min;
+	end_min = end_hour * 60 + end_min;
+
+	if ((current_min < start_min) ||
+			(current_min > end_min))
+		return 0;
+	else
+		return 1;
+}
+
+int test_is_within_time(void)
+{
+	char obj_time[32] = "12:30-13:30";
+	int res = is_within_object_time(obj_time);
+
+	printf("now %s during %s\n", res ? "is" : "is not", obj_time);
+}
 
 void main(void)
 {
@@ -133,4 +186,6 @@ void main(void)
 	test_time_cost_timespec();
 	get_time_string_ns();
 	get_time_string_us();
+	test_get_time_us();
+	test_is_within_time();
 }
